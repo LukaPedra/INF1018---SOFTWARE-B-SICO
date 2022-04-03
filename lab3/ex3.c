@@ -13,14 +13,27 @@ int odd_ones(unsigned int x){
   return 0;
 }
 unsigned char switch_byte(unsigned char x){
-	unsigned char aux;
-	aux = ~x;
-	return aux;
+	unsigned char n1 = x & 0x0f;
+	unsigned char n2 = x & 0xf0;
+	n1 <<= 4;
+	n2 >>= 4;
+	return n1+n2;
 }
 
-int main() {
-	printf("%x tem numero %s de bits\n",0x01010101,odd_ones(0x01010101) ? "impar":"par");
-	printf("%x tem numero %s de bits\n",0x01030101,odd_ones(0x01030101) ? "impar":"par");
-	printf("%x trocado pela funcao switch_byte ela vira: %x\n", 0xAB, switch_byte(0xAB));
+unsigned char rotate_left(unsigned char x, int n){
+	unsigned char t1 = x<<n;
+	unsigned char t2 = x>>(8-n);
+	return t1|t2;
+}
+
+int main(void) {
+	unsigned char c1 = switch_byte(0xAB);
+	unsigned char c2 = rotate_left(0x61,1);
+	unsigned char c3 = rotate_left(0x61,2);
+	unsigned char c4 = rotate_left(0x61,7);
+	printf("%2x\n",c1);
+	printf("%2x\n",c2);
+	printf("%2x\n",c3);
+	printf("%2x\n",c4);	
 	return 0;
 }
