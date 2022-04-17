@@ -10,8 +10,7 @@ int main() {
 
 .data
 nums:  .int  10, -21, -30, 45
-sum:  .int  0
-Sf:  .string "%d %d\n"    # string de formato para printf
+Sf:  .string "%d\n"    # string de formato para printf
 
 .text
 .globl  main
@@ -27,23 +26,17 @@ main:
 /********************************************************/
 
   movl  $0, %ebx  /* ebx = 0; */
-  movl  $sum, %ecx /*ecx = &sum */
+  movl  $0, %r13d
   movq  $nums, %r12  /* r12 = &nums */
 
 L1:
   cmpl  $4, %ebx  /* if (ebx == 4) ? */
   je  L2          /* goto L2 */
 
-  movl  (%r12), %eax    /* eax = *r12 */
-  addl  (%eax), %ecx    /* ecx += eax*/
-
-/*************************************************************/
-/* este trecho imprime o valor de %eax (estraga %eax)  */
-  movq    $Sf, %rdi    /* primeiro parametro (ponteiro)*/
-  movl    %eax, %esi   /* segundo parametro  (inteiro) */
-  movl    %ecx, %edi
-  call  printf       /* chama a funcao da biblioteca */
-/*************************************************************/
+  /*movl  (%r12), %eax    /* eax = *r12 */
+  /*addl  %eax, %r13d    /* r13d += eax*/
+  addl  (%r12), %r13d
+  movl  %r13d,  %eax
 
   //addl  $nums,  %ecx /* ebx +=  */
   addl  $1, %ebx  /* ebx += 1; */
@@ -51,6 +44,12 @@ L1:
   jmp  L1         /* goto L1; */
 
 L2:  
+/*************************************************************/
+/* este trecho imprime o valor de %eax (estraga %eax)  */
+  movq    $Sf, %rdi    /* primeiro parametro (ponteiro)*/
+  movl    %eax, %esi   /* segundo parametro  (inteiro) */
+  call  printf       /* chama a funcao da biblioteca */
+/*************************************************************/
 /***************************************************************/
 /* mantenha este trecho aqui e nao mexa - finalizacao!!!!      */
   movq  $0, %rax  /* rax = 0  (valor de retorno) */
