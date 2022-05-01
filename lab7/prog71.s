@@ -33,6 +33,12 @@ L1:
   cmpb  $0, (%r12)  /* if (*pc == 0) ? */
   je  L2          /* goto L2 */
 
+  cmpb  $123, (%r12) /* if (*pc == 123)*/
+  je NextChar
+
+  cmpb  $125, (%r12) /*if (*pc == 125)*/
+  je NextChar
+
   movsbl  (%r12), %eax    /* eax = *r12 (estendendo o byte para 32 bits */
 
 /*************************************************************/
@@ -42,6 +48,9 @@ L1:
   movl  $0, %eax
   call  printf       /* chama a funcao da biblioteca */
 /*************************************************************/
+  jmp NextChar
+  
+NextChar:
 
   addq  $1, %r12  /* r12 += 1; */
   jmp  L1         /* goto L1; */
